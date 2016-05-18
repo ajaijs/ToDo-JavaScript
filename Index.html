@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title> To Do List - JavaScript</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+<script>
+
+        window.onload = function(){
+        showHeader();
+        loadData(tasks);
+
+    }
+    var tasks = [{TaskName:'Shopping', DueDate: '2015-09-08'}];
+    addToDo = function () {
+
+        var Name = document.getElementById("todoID").value;
+        var Date = document.getElementById("todoDate").value;
+        if(Name == '' || Date == '')
+        {
+            alert("Please Fill out the Fields");
+        }
+        else {
+            var task = {TaskName: Name, DueDate: Date};
+            tasks.push(task);
+            loadData(tasks);
+            showHeader();
+            clearForm();
+            document.getElementById("deleteBtn").style.display = "block";
+        }
+
+    }
+
+    delTodo = function(){
+
+        var checkbox = document.getElementsByName("taskSelector");
+
+            for(var i=0;i<tasks.length;i++)
+            {
+                if(checkbox[i].checked)
+                {
+                    tasks.splice(i,1);
+                    loadData(tasks);
+                }
+            }
+            showHeader()
+
+    }
+
+
+    function loadData(data){
+            var table = "<table id='gridTable' class='table table-bordered'><tr> <th> Select</th><th> Task Name </th> <th> Due Date </th></tr>";
+
+            data.forEach(function(entry){
+                table +="<tr class='strike'> <td>"+' <input type =checkbox name="taskSelector">'+" </td> <td> "+ entry.TaskName+"</span></td> <td>"+entry.DueDate+"</td>  </tr>"
+
+            })
+
+            table+="</table>";
+            document.getElementById("gridPanel").innerHTML = table;
+
+         }
+
+    function showHeader()
+    {
+        document.getElementById("heading").innerHTML = tasks.length;
+        if(tasks.length == 0)
+        {
+            document.getElementById("deleteBtn").style.display = "none";
+            document.getElementById('gridTable').style.display = "none"
+        }
+    }
+
+    function clearForm()
+    {
+        document.getElementById("todoID").value = '';
+        document.getElementById("todoDate").value='';
+    }
+
+</script>
+</head>
+
+<style>
+    body{
+        background-color: #269abc;
+    }
+    tr{
+        background:gold;
+    }
+    input:required:invalid{
+        border-color: red;
+    }
+    input:required:valid
+    {
+        border-color: lawngreen;
+    }
+
+</style>
+
+<body class="container">
+
+<br>
+
+<div class="jumbotron">
+    <h1> You Have <span id="heading"></span> tasks to complete..</h1>
+
+</div>
+
+<div id="formPanel" class="jumbotron">
+
+    Enter the Task: <input type="text" id="todoID" required autofocus>
+    Enter the due Date: <input type="date" id="todoDate" required>
+    <input type="button" class="btn btn-primary" value="Add Task" onclick="addToDo()">
+</div>
+
+<div id="grid">
+<span id="gridPanel"></span>
+</div>
+
+<div id="deleteBtn">
+    <input type="button" class="btn btn-danger" value="Delete Event" onclick="delTodo()">
+</div>
+
+
+
+</body>
+</html>
